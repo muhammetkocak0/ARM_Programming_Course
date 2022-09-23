@@ -1,0 +1,4 @@
+bmp180.c:6:6:BMP180_Init	8	static
+bmp180.c:20:6:BMP180_Calibrate	24	static
+bmp180.c:41:9:BMP180_True_Temperature	32	static
+bmp180.c:64:9:BMP180_True_Pressure	40	static

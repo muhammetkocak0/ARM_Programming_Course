@@ -1,0 +1,89 @@
+
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+#include "i2c-lcd.h"
+void gpio_for_i2c_cfg()
+{
+	RCC->AHB1ENR |=(1<<1);
+	GPIOB->MODER |= (1<<21)|(1<<23);
+	GPIOB->OTYPER |= (1<<10)|(1<<11);
+	GPIOB->OSPEEDR |=(1<<20)|(1<<21)|(1<<22)|(1<<23);
+	GPIOB->PUPDR |=(1<<20)|(1<<22);
+	GPIOB->AFR[1] |=(1<<14)|(1<<10);
+}
+
+void i2c_cfg()
+{   RCC->APB1ENR |= (1<<22);
+
+
+	I2C2->CR2 |= 0x0008;
+	I2C2->CCR |=0x0028;
+	I2C2->TRISE |=0x09;
+	I2C2->CR1 |=(1<<0);
+
+	//START GENERATION
+//STOP GENERATION
+
+}
+
+
+void i2c_write(uint8_t adress,uint8_t data)
+{
+
+	I2C2->CR1 |= 0x0100; 		   // START BIT'I Gönder
+	while(!(I2C2->SR1 & 0x0001));  // Start kosulunu bekle (SB=1)
+	I2C2->DR = adress; 	   		   // Slave adresi. okuma yazma komutu
+	while(!(I2C2->SR1 & 0x0002));  // adres gönderimini bekle (ADDR=1)
+    while(!(I2C2->SR2 & 0x0001));  //MSL
+	//I2C2->DR = address;		   // Cipin adresi
+	while(!(I2C2->SR1 & 0x0080));  // TxE Data Register'in bosalmasini bekle(Txe)
+	I2C2->DR = data;			   //Veriyi Yaz
+	while(!(I2C2->SR1 & 0x0080));  // TxE Data Register'in bosalmasini bekle(Txe)
+	while(!(I2C2->SR1 & 0x0004));  // Verinin gönderimini bekle (BTF)
+	I2C2->CR1 |= 0x0200;           // STOP biti gönder
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main(void)
+{
+	gpio_for_i2c_cfg();
+	i2c_cfg();
+	lcd_init();
+	lcd_sende_string("muhammed");
+  while (1)
+  {
+
+  }
+}
+
+
+/*
+ * Callback used by stm32f4_discovery_audio_codec.c.
+ * Refer to stm32f4_discovery_audio_codec.h for more info.
+ */
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size){
+  /* TODO, implement your code here */
+  return;
+}
+
+/*
+ * Callback used by stm324xg_eval_audio_codec.c.
+ * Refer to stm324xg_eval_audio_codec.h for more info.
+ */
+uint16_t EVAL_AUDIO_GetSampleCallBack(void){
+  /* TODO, implement your code here */
+  return -1;
+}

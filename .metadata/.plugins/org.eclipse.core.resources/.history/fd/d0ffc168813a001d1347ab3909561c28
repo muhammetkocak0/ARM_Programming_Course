@@ -1,0 +1,21 @@
+/*
+ * nokia5110.c
+ *
+ *  Created on: 22 Eyl 2022
+ *      Author: muham
+ */
+#include "nokia5110.h"
+void Nokia5110_Init(void)
+{
+	Nokia5110_Reset();
+
+
+
+
+}
+void Nokia5110_Reset(void)
+{
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_SET);
+}

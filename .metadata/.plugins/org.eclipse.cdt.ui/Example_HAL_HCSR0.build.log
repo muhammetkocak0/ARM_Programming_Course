@@ -1,0 +1,17 @@
+23:06:50 **** Incremental Build of configuration Debug for project Example_HAL_HCSR0 ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Example_HAL_HCSR0.elf" @"objects.list"   -mcpu=cortex-m4 -T"E:\ARM_yeni\Example_HAL_HCSR0\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Example_HAL_HCSR0.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Example_HAL_HCSR0.elf
+ 
+arm-none-eabi-size   Example_HAL_HCSR0.elf 
+arm-none-eabi-objdump -h -S  Example_HAL_HCSR0.elf  > "Example_HAL_HCSR0.list"
+   text	   data	    bss	    dec	    hex	filename
+  12872	     20	   1736	  14628	   3924	Example_HAL_HCSR0.elf
+Finished building: default.size.stdout
+ 
+Finished building: Example_HAL_HCSR0.list
+ 
+
+23:06:51 Build Finished. 0 errors, 0 warnings. (took 682ms)
+

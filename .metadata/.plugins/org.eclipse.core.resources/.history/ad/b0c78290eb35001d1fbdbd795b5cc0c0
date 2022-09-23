@@ -1,0 +1,107 @@
+
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+#include "i2c-lcd.h"
+void gpio_for_i2c_cfg()
+{
+	RCC->AHB1ENR |=(1<<1);
+	GPIOB->MODER |= (1<<21)|(1<<23);
+	GPIOB->OTYPER |= (1<<10)|(1<<11);
+	GPIOB->OSPEEDR |=(1<<20)|(1<<21)|(1<<22)|(1<<23);
+	GPIOB->PUPDR |=(1<<20)|(1<<22);
+	GPIOB->AFR[1] |=(1<<14)|(1<<10);
+}
+void RCC_Configuration_Registers()
+{
+	RCC->CR &= ~(1<<0);  //HSI kapattik
+    RCC->CR |= (1<<16);  //HSE actik
+    while(!(RCC->CR & 1<<17)); //HSE'nin acilip acilmadigini kontrol eder
+    RCC->CR |= (1<<19);  //CSS ON bitini aktif eder bu bit clock korumasý saglar
+
+    RCC->PLLCFGR= 0x00000000; //register'ý sýfýrlar
+
+    RCC->PLLCFGR |=(4<<0); //PLLM 4 olarak ayarlar
+    RCC->PLLCFGR |=(168<<6); // PLLN 168 olarak ayarlar
+    RCC->PLLCFGR |=(1<<22); //PLL'i HSE icin aktif eder
+
+    RCC->CR |= (1<<24); //PLL ON aktif eder
+    while(!(RCC->CR & 1<<25)); //PLL acilip acilmadigini kontrol eder
+
+    RCC->CFGR |= (1<<1); //clock'un hangi modda çalýþacaðýný seçer biz PLL yaptýk
+    while(!(RCC->CFGR & 1<<1)); //modun kabul edilip edilmediðini sorgular
+}
+void i2c_cfg()
+{   RCC->APB1ENR |= (1<<22);
+
+
+	I2C2->CR2 |= 0x0008;
+	I2C2->CCR |=0x0028;
+	I2C2->TRISE |=0x09;
+	I2C2->CR1 |=(1<<0);
+
+	//START GENERATION
+//STOP GENERATION
+
+}
+
+
+void i2c_write(uint8_t adress,uint8_t data)
+{
+
+	I2C2->CR1|=(1<<8);
+	while(!(I2C2->SR1 & 1<<0));
+	I2C2->DR = adress;
+	while(!(I2C2->SR1 & 1<<1));
+	while(!(I2C2->SR1 & 1<<0));
+	while(!(I2C2->SR1 & 1<<7));
+	I2C2->DR = data;
+	while(!(I2C2->SR1 & 1<<7));
+	while(!(I2C2->SR1 & 1<<2));
+	I2C2->CR1|=(1<<9);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main(void)
+{
+	RCC_Configuration_Registers();
+	gpio_for_i2c_cfg();
+	i2c_cfg();
+	lcd_init();
+	lcd_sende_string("muhammed");
+  while (1)
+  {
+
+  }
+}
+
+
+/*
+ * Callback used by stm32f4_discovery_audio_codec.c.
+ * Refer to stm32f4_discovery_audio_codec.h for more info.
+ */
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size){
+  /* TODO, implement your code here */
+  return;
+}
+
+/*
+ * Callback used by stm324xg_eval_audio_codec.c.
+ * Refer to stm324xg_eval_audio_codec.h for more info.
+ */
+uint16_t EVAL_AUDIO_GetSampleCallBack(void){
+  /* TODO, implement your code here */
+  return -1;
+}

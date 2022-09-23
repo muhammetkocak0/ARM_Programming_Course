@@ -1,0 +1,7 @@
+main.c:61:10:gecen_sure	16	static
+main.c:95:5:main	16	static
+main.c:142:6:SystemClock_Config	88	static
+main.c:182:13:MX_TIM1_Init	32	static
+main.c:228:13:MX_TIM2_Init	32	static
+main.c:273:13:MX_GPIO_Init	32	static
+main.c:306:6:Error_Handler	4	static

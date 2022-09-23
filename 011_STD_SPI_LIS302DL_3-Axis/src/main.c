@@ -1,0 +1,127 @@
+
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+#define x_address 0x29
+#define y_address 0x2B
+#define z_address 0x2D
+GPIO_InitTypeDef gpio_set_for_spi;
+SPI_InitTypeDef spi_set;
+
+void gpio_cfg()
+{
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+
+	GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_SPI1);
+	GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_SPI1);
+	GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_SPI1);
+	gpio_set_for_spi.GPIO_Mode = GPIO_Mode_AF;
+	gpio_set_for_spi.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;
+	gpio_set_for_spi.GPIO_OType = GPIO_OType_PP;
+	gpio_set_for_spi.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	gpio_set_for_spi.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOA, &gpio_set_for_spi);
+
+	gpio_set_for_spi.GPIO_Mode = GPIO_Mode_OUT;
+	gpio_set_for_spi.GPIO_OType = GPIO_OType_PP;
+	gpio_set_for_spi.GPIO_Pin =  GPIO_Pin_3;
+	gpio_set_for_spi.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	gpio_set_for_spi.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOE, &gpio_set_for_spi);
+}
+
+void spi_cfg()
+{
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+	spi_set.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
+	spi_set.SPI_CPHA = SPI_CPHA_2Edge;
+	spi_set.SPI_CPOL = SPI_CPOL_High;
+	spi_set.SPI_DataSize = SPI_DataSize_8b;
+	spi_set.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+	spi_set.SPI_FirstBit = SPI_FirstBit_MSB;
+	spi_set.SPI_Mode = SPI_Mode_Master;
+	spi_set.SPI_NSS = SPI_NSS_Soft | SPI_NSSInternalSoft_Set;
+	SPI_Init(SPI1, &spi_set);
+	SPI_Cmd(SPI1, ENABLE);
+
+
+	GPIO_SetBits(GPIOE, GPIO_Pin_3);
+
+}
+
+void SPI_Write_data(uint8_t address, uint8_t data)
+{
+	GPIO_ResetBits(GPIOE, GPIO_Pin_3);
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE));
+	SPI_I2S_SendData(SPI1, address);
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE));
+	SPI_I2S_ReceiveData(SPI1);
+
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE));
+	SPI_I2S_SendData(SPI1, data);
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE));
+	SPI_I2S_ReceiveData(SPI1);
+	GPIO_SetBits(GPIOE, GPIO_Pin_3);
+}
+uint8_t SPI_READ(uint8_t address, uint8_t data)
+{
+	GPIO_ResetBits(GPIOE, GPIO_Pin_3);
+	address = address | 0x80;
+
+
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE));
+	SPI_I2S_SendData(SPI1, address);
+
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE));
+	SPI_I2S_ReceiveData(SPI1);
+
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE));
+	SPI_I2S_SendData(SPI1, data);
+
+	while(!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE));
+	SPI_I2S_ReceiveData(SPI1);
+
+	GPIO_SetBits(GPIOE, GPIO_Pin_3);
+	return SPI_I2S_ReceiveData(SPI1);
+
+}
+
+
+
+
+uint8_t x,y,z;
+
+
+int main(void)
+{
+
+	gpio_cfg();
+	spi_cfg();
+	SPI_Write_data(0x20, 0x67);
+
+  while (1)
+  {
+	 x = SPI_READ(x_address, 0x00);
+	 y = SPI_READ(y_address, 0x00);
+	 z = SPI_READ(z_address, 0x00);
+  }
+}
+
+
+/*
+ * Callback used by stm32f4_discovery_audio_codec.c.
+ * Refer to stm32f4_discovery_audio_codec.h for more info.
+ */
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size){
+  /* TODO, implement your code here */
+  return;
+}
+
+/*
+ * Callback used by stm324xg_eval_audio_codec.c.
+ * Refer to stm324xg_eval_audio_codec.h for more info.
+ */
+uint16_t EVAL_AUDIO_GetSampleCallBack(void){
+  /* TODO, implement your code here */
+  return -1;
+}

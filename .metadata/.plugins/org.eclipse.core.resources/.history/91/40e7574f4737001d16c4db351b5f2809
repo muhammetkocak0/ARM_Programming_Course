@@ -1,0 +1,18 @@
+#include "stm32f4xx_it.h"
+extern I2C_HandleTypeDef hi2c2;
+
+
+
+void BMP180_Init()
+{
+if(HAL_I2C_IsDeviceReady(&hi2c2, BMP180_WRITE_ADDRESS, 1, 100)==HAL_OK)
+{
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15, ENABLE);
+}
+
+
+
+
+}
+
+

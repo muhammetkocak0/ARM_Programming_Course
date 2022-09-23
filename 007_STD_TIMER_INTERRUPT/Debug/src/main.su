@@ -1,0 +1,6 @@
+main.c:6:6:timer_interrupt_configes	8	static
+main.c:38:6:GPIO_ayar_fonksiyonu	8	static
+main.c:49:6:TIM2_IRQHandler	8	static
+main.c:63:5:main	8	static
+main.c:78:6:EVAL_AUDIO_TransferComplete_CallBack	16	static
+main.c:87:10:EVAL_AUDIO_GetSampleCallBack	4	static

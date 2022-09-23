@@ -1,0 +1,7 @@
+23:17:23 **** Incremental Build of configuration Debug for project 006_HAL_DAC ****
+Info: Internal Builder is used for build
+arm-atollic-eabi-objcopy.exe -O ihex 006_HAL_DAC.elf 006_HAL_DAC.hex 
+Info: Parallel threads used: 0
+
+23:17:24 Build Finished (took 221ms)
+

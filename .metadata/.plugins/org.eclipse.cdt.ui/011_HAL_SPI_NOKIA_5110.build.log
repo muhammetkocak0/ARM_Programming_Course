@@ -1,0 +1,7 @@
+18:25:54 **** Incremental Build of configuration Debug for project 011_HAL_SPI_NOKIA_5110 ****
+Info: Internal Builder is used for build
+arm-atollic-eabi-objcopy.exe -O ihex 011_HAL_SPI_NOKIA_5110.elf 011_HAL_SPI_NOKIA_5110.hex 
+Info: Parallel threads used: 0
+
+18:25:55 Build Finished (took 142ms)
+

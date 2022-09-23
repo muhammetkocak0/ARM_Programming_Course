@@ -1,0 +1,71 @@
+
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+
+
+void gpio_for_adc_cfg()
+{
+	RCC->AHB1ENR |=(1<<2);
+    GPIOC->MODER |=(1<<2)|(1<<3);
+    GPIOC->OSPEEDR |=(1<<2)|(1<<3);
+}
+void adc_for_dma_cfg()
+{
+	RCC->APB2ENR |= (1<<9);
+ADC2->CR2 |= (1<<0); //ADON BASLATIR
+ADC2->CR2 |= (1<<1)|(1<<8)|(1<<9)|(1<<10);
+ADC2->CR2 |= (1<<30); //ADC BASLATIR
+ADC2->SMPR2 |= (1<<3)|(1<<4);
+ADC->CCR |= (1<<13);
+}
+
+uint16_t degisken = 0;
+void dma_with_adc_cfg()
+{
+	while(DMA2_Stream3->CR && (1<<0) == 1);
+	RCC->AHB1ENR |=(1<<22);
+    DMA2_Stream3->CR |= (1<<8)|(1<<10)|(1<<11)|(1<<13)|(1<<16)|(1<<17)|(1<<25);
+    DMA2_Stream3->NDTR = 1;
+    DMA2_Stream3->PAR = (uint32_t)&(ADC1->DR);
+    DMA2_Stream3->M0AR = (uint32_t)&(degisken);
+
+}
+
+
+
+
+
+
+
+int main(void)
+{
+
+	gpio_for_adc_cfg();
+	adc_for_dma_cfg();
+	dma_with_adc_cfg();
+  while (1)
+  {
+
+
+
+
+
+
+  }
+}
+
+
+
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size){
+  /* TODO, implement your code here */
+  return;
+}
+
+/*
+ * Callback used by stm324xg_eval_audio_codec.c.
+ * Refer to stm324xg_eval_audio_codec.h for more info.
+ */
+uint16_t EVAL_AUDIO_GetSampleCallBack(void){
+  /* TODO, implement your code here */
+  return -1;
+}

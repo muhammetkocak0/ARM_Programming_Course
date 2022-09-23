@@ -1,0 +1,125 @@
+
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+
+GPIO_InitTypeDef gpio_for_i2c;
+I2C_InitTypeDef i2c_typedef;
+
+uint8_t S_address = 0x4E;
+
+
+void I2C_Write(uint8_t address, uint8_t data)
+{
+	while(I2C_GetFlagStatus(I2C2, I2C_FLAG_BUSY));  // I2C
+
+	I2C_GenerateSTART(I2C2, ENABLE);	// I2C
+
+	while(!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_MODE_SELECT));
+
+	I2C_Send7bitAddress(I2C2, address, I2C_Direction_Transmitter);
+
+	while(!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ));
+
+	I2C_SendData(I2C2, data);
+
+	while(!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+
+	I2C_GenerateSTOP(I2C2, ENABLE);
+
+
+}
+
+
+
+
+
+void gpio_for_button_cfg()
+{
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+	gpio_for_i2c.GPIO_Pin = GPIO_Pin_0;
+	gpio_for_i2c.GPIO_Mode = GPIO_Mode_IN;
+	gpio_for_i2c.GPIO_OType = GPIO_OType_PP;
+	gpio_for_i2c.GPIO_PuPd = GPIO_PuPd_DOWN;
+	gpio_for_i2c.GPIO_Speed = GPIO_Speed_100MHz;
+
+	GPIO_Init(GPIOA, &gpio_for_i2c);
+
+}
+void i2c_cfg()
+{
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
+
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_I2C2);
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_I2C2);
+
+
+	gpio_for_i2c.GPIO_Mode = GPIO_Mode_AF;
+	gpio_for_i2c.GPIO_Pin = GPIO_Pin_10 |GPIO_Pin_11;
+	gpio_for_i2c.GPIO_OType = GPIO_OType_OD;
+	gpio_for_i2c.GPIO_PuPd = GPIO_PuPd_UP;
+	gpio_for_i2c.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOB, &gpio_for_i2c);
+
+	i2c_typedef.I2C_Ack = ENABLE;
+	i2c_typedef.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_10bit;
+	i2c_typedef.I2C_ClockSpeed = 400000;
+	i2c_typedef.I2C_DutyCycle = I2C_DutyCycle_2;
+	i2c_typedef.I2C_Mode = I2C_Mode_I2C;
+	i2c_typedef.I2C_OwnAddress1 = 0x00;
+	I2C_Init(I2C2, &i2c_typedef);
+	I2C_Cmd(I2C2, ENABLE);
+
+
+
+
+
+
+
+}
+
+int main(void)
+{
+	gpio_for_button_cfg();
+	i2c_cfg();
+	int i = 0;
+	  I2C_Write(S_address,1);
+	  for(int i = 0; i<16800; i++);
+	  I2C_Write(S_address,2);
+	  for(int i = 0; i<16800; i++);
+	  I2C_Write(S_address,6);
+	  for(int i = 0; i<16800; i++);
+	  I2C_Write(S_address,15);
+	  for(int i = 0; i<16800; i++);
+	  I2C_Write(S_address,20);
+	  for(int i = 0; i<16800; i++);
+	  I2C_Write(S_address,40);
+	  for(int i = 0; i<16800; i++);
+	  I2C_Write(S_address,40);
+	  for(int i = 0; i<16800; i++);
+  while (1)
+  {
+
+  }
+}
+
+
+
+/*
+ * Callback used by stm32f4_discovery_audio_codec.c.
+ * Refer to stm32f4_discovery_audio_codec.h for more info.
+ */
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size){
+  /* TODO, implement your code here */
+  return;
+}
+
+/*
+ * Callback used by stm324xg_eval_audio_codec.c.
+ * Refer to stm324xg_eval_audio_codec.h for more info.
+ */
+uint16_t EVAL_AUDIO_GetSampleCallBack(void){
+  /* TODO, implement your code here */
+  return -1;
+}

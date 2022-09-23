@@ -1,0 +1,10 @@
+14:23:58 **** Incremental Build of configuration Debug for project 007_HAL_TIMER_SLAVE_GATED_MODE ****
+make -j16 all 
+arm-none-eabi-size   007_HAL_TIMER_SLAVE_GATED_MODE.elf 
+   text	   data	    bss	    dec	    hex	filename
+   9424	     20	   1728	  11172	   2ba4	007_HAL_TIMER_SLAVE_GATED_MODE.elf
+Finished building: default.size.stdout
+ 
+
+14:23:58 Build Finished. 0 errors, 0 warnings. (took 183ms)
+

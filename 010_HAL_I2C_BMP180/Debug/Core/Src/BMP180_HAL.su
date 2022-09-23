@@ -1,0 +1,4 @@
+BMP180_HAL.c:6:6:BMP180_Init	8	static
+BMP180_HAL.c:20:6:BMP180_Calibrate	24	static
+BMP180_HAL.c:41:9:BMP180_True_Temperature	32	static
+BMP180_HAL.c:64:9:BMP180_True_Pressure	40	static

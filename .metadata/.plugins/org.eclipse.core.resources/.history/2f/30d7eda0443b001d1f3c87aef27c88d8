@@ -1,0 +1,60 @@
+
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+
+RNG_TypeDef rng_set;
+void func()
+{
+
+	rng_set.CR &= ~(1<<2);
+
+}
+
+uint32_t create_randomNumber()
+{
+	atexit(func);
+	rng_set.CR |= (1<<2);
+	while(!RNG_GetFlagStatus(RNG_FLAG_DRDY));
+	return rng_set.DR;
+}
+
+double oran = 0;
+
+uint32_t random_number = 0;
+int main(void)
+{
+int yazi = 0, tura = 0;
+  while (1)
+  {
+	  random_number = create_randomNumber();
+if(yazi>4294967296)
+{
+	yazi++;
+}
+else
+{
+	tura++;
+}
+for(int i = 0; i<1680000*6;i++);
+oran = (double)tura/(double)yazi;
+  }
+}
+
+
+/*
+ * Callback used by stm32f4_discovery_audio_codec.c.
+ * Refer to stm32f4_discovery_audio_codec.h for more info.
+ */
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size){
+  /* TODO, implement your code here */
+  return;
+}
+
+/*
+ * Callback used by stm324xg_eval_audio_codec.c.
+ * Refer to stm324xg_eval_audio_codec.h for more info.
+ */
+uint16_t EVAL_AUDIO_GetSampleCallBack(void){
+  /* TODO, implement your code here */
+  return -1;
+}

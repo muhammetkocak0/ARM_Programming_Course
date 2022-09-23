@@ -1,0 +1,10 @@
+13:15:53 **** Incremental Build of configuration Debug for project 007_HAL_TIMER_SLAVE_RESET_MODE ****
+make -j16 all 
+arm-none-eabi-size   007_HAL_TIMER_SLAVE_RESET_MODE.elf 
+   text	   data	    bss	    dec	    hex	filename
+   8000	     20	   1644	   9664	   25c0	007_HAL_TIMER_SLAVE_RESET_MODE.elf
+Finished building: default.size.stdout
+ 
+
+13:15:53 Build Finished. 0 errors, 0 warnings. (took 174ms)
+

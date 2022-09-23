@@ -1,0 +1,4 @@
+nokia5110.c:8:6:Nokia5110_Init	8	static
+nokia5110.c:21:6:Nokia5110_Reset	8	static
+nokia5110.c:27:6:Nokia5110_Write_Data	16	static
+nokia5110.c:53:6:Nokia5110_Write_Command	16	static

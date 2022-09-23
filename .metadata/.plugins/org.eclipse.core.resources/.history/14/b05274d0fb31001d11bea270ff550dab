@@ -1,0 +1,68 @@
+
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+
+
+void gpio_for_adc_cfg()
+{
+	RCC->AHB1ENR |=(1<<2);
+
+
+
+
+}
+void adc_for_dma_cfg()
+{
+	RCC->APB2ENR |= (1<<9);
+
+
+
+
+
+}
+void dma_with_adc_cfg()
+{
+	RCC->AHB1ENR |=(1<<22);
+
+
+
+
+}
+
+
+
+
+
+
+
+int main(void)
+{
+
+
+
+  while (1)
+  {
+
+
+
+
+
+
+  }
+}
+
+
+
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size){
+  /* TODO, implement your code here */
+  return;
+}
+
+/*
+ * Callback used by stm324xg_eval_audio_codec.c.
+ * Refer to stm324xg_eval_audio_codec.h for more info.
+ */
+uint16_t EVAL_AUDIO_GetSampleCallBack(void){
+  /* TODO, implement your code here */
+  return -1;
+}

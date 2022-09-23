@@ -1,0 +1,19 @@
+/*
+ * nokia5110.h
+ *
+ *  Created on: 22 Eyl 2022
+ *      Author: muham
+ */
+
+#ifndef SRC_NOKIA5110_H_
+#define SRC_NOKIA5110_H_
+
+#include "stm32f4xx_hal.h"
+extern SPI_HandleTypeDef hspi1;
+
+void Nokia5110_Init(void);
+void Nokia5110_Reset(void);
+void Nokia5110_Clear(void);
+void Nokia5110_Write_Data(void);
+
+#endif /* SRC_NOKIA5110_H_ */

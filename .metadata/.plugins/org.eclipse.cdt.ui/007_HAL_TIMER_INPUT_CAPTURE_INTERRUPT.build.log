@@ -1,0 +1,10 @@
+22:55:17 **** Incremental Build of configuration Debug for project 007_HAL_TIMER_INPUT_CAPTURE_INTERRUPT ****
+make -j16 all 
+arm-none-eabi-size   007_HAL_TIMER_INPUT_CAPTURE_INTERRUPT.elf 
+   text	   data	    bss	    dec	    hex	filename
+   9992	     20	   1644	  11656	   2d88	007_HAL_TIMER_INPUT_CAPTURE_INTERRUPT.elf
+Finished building: default.size.stdout
+ 
+
+22:55:17 Build Finished. 0 errors, 0 warnings. (took 160ms)
+

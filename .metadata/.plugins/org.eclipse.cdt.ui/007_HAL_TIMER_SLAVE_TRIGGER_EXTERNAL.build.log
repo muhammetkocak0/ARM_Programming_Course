@@ -1,0 +1,10 @@
+19:59:09 **** Incremental Build of configuration Debug for project 007_HAL_TIMER_SLAVE_TRIGGER_EXTERNAL ****
+make -j16 all 
+arm-none-eabi-size   007_HAL_TIMER_SLAVE_TRIGGER_EXTERNAL.elf 
+   text	   data	    bss	    dec	    hex	filename
+   9080	     20	   1644	  10744	   29f8	007_HAL_TIMER_SLAVE_TRIGGER_EXTERNAL.elf
+Finished building: default.size.stdout
+ 
+
+19:59:10 Build Finished. 0 errors, 0 warnings. (took 175ms)
+

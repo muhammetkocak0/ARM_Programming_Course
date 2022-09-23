@@ -1,0 +1,10 @@
+15:49:26 **** Incremental Build of configuration Debug for project Example_4x4_keypad_HAL ****
+make -j16 all 
+arm-none-eabi-size   Example_4x4_keypad_HAL.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6796	     20	   1572	   8388	   20c4	Example_4x4_keypad_HAL.elf
+Finished building: default.size.stdout
+ 
+
+15:49:26 Build Finished. 0 errors, 0 warnings. (took 245ms)
+
